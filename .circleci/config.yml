@@ -10,6 +10,10 @@ jobs:
     steps:
       - checkout
 
+      - run:
+          name: Update npm
+          command: 'sudo npm install -g npm@latest'
+
       # Download and cache dependencies
       - restore_cache:
           keys:
@@ -17,11 +21,17 @@ jobs:
           # fallback to using the latest cache if no exact match is found
           - v1-dependencies-
 
-      - get_deps: npm i
+      - run:
+          name: Install dependencies
+          command: npm install
 
-      - lint: npm run lint:ci
+      - run:
+          name: Lint
+          command: npm run lint:ci
 
-      - build: npm run build:prod 
+      - run:
+          name: Build
+          command: npm run build:prod
 
       - save_cache:
           paths:
